@@ -3,10 +3,10 @@ auth_email=""
 auth_key="" # found in cloudflare account settings
 zone_identifier=""
 
-cd /etc/opendkim/keyfiles/mail.summerbo.at
-opendkim-genkey -s mail -d mail.summerbo.at
+cd /etc/opendkim/keyfiles/mail.example.com
+opendkim-genkey -s mail -d mail.example.com
 new_dkim=$(cat mail.txt  | cut -d"(" -f2 | cut -d")" -f1 | sed ':a;N;$!ba;s/\n/ /g' |sed 's/\t/     /g' | sed  -e 's/"//g')
-dkimrecord_name="mail._domainkey.summerbo.at"
+dkimrecord_name="mail._domainkey.example.com"
 dkimrecordmail_name="mail._domainkey.mail.example.com"
 
 dkimrecord_identifier=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zone_identifier/dns_records?name=$dkimrecord_name&type=TXT" -H "X-Auth-Email: $auth_email" -H "X-Auth-Key: $auth_key" -H "Content-Type: application/json"  | grep -Po '(?<="id":")[^"]*')
